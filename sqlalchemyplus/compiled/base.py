@@ -1,4 +1,4 @@
-"""Definition of SQL Syntax used to compile every statment
+"""Definition of SQL Syntax used to compile every statment.
 
 SQL base syntaxic elements such as CREATE or DROP are defined here.
 They are handle in each SQLStatment. SQLStatment represents the base
@@ -12,7 +12,7 @@ Todo:
 
 
 def item_action(item):
-    """Wrapper that returns actionnable method for the specified item.
+    """Returns actionnable method for the specified item.
 
     Args:
         item (any): Any object with a compile method.
@@ -22,14 +22,15 @@ def item_action(item):
 
     """
 
-    def action(self):
-        self.append(item)
+    def action(self, element=None):
+        """Perform an action."""
+        self.append(item.compile(element))
         return self
     return action
 
 
 class SQLSyntaxElement(object):
-    """A representation of an SQL Syntaxic Element such as CREATE
+    """A representation of an SQL Syntaxic Element such as CREATE.
 
     Args:
         value (string): plain syntax of the element ex: 'CREATE' .
@@ -40,6 +41,7 @@ class SQLSyntaxElement(object):
     """
 
     def __init__(self, value):
+        """Instantiate a new SQLSyntaxElement."""
         self.value = value.upper()
 
     def compile(self, element=None):
@@ -54,7 +56,7 @@ class SQLSyntaxElement(object):
 
         """
         if element:
-            return ' '.join()
+            return ' '.join([self.value, element])
         else:
             return self.value
 
@@ -77,12 +79,14 @@ class SQLStatment(object):
     }
 
     def __new__(cls, *args, **kw):
+        """Create a new SQLStatment."""
         for key, item in cls.SQL_MAPPING.items():
             setattr(cls, key, item_action(item))
 
         return super().__new__(cls)
 
     def __init__(self):
+        """Instantiate a new SQLStatment."""
         self.items = []
 
     def append(self, sql_clause):
@@ -101,5 +105,5 @@ class SQLStatment(object):
 
     @property
     def compiled(self):
-        """The full SQL statment, properly compiled"""
-        return ' '.join(self.words)
+        """Get the properly defined SQL statment."""
+        return ' '.join(self.items)
