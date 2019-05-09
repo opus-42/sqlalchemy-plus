@@ -11,7 +11,7 @@ Todo:
 """
 
 
-def item_action(item):
+def item_action(item):  # noqa
     """Returns actionnable method for the specified item.
 
     Args:
