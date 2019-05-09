@@ -1,2 +1,1 @@
-sqlalchemy
-flake8
+sqlalchemy>=1.3.0
