@@ -1,25 +1,28 @@
-from sqlalchemy.sql.base import DialectKWArgs
+"""A base for View and Materialized View definition."""
+
+from sqlalchemy.sql.base import DialectKWArgs, _bind_or_error
 from sqlalchemy.sql.selectable import FromClause, Immutable, Select
 from sqlalchemy.sql.schema import SchemaItem, BLANK_SCHEMA, quoted_name
 
 
 class ViewClause(DialectKWArgs, FromClause, Immutable, SchemaItem):
-    """Represent a base View"""
+    """Represent a basic View representation."""
 
-    __visit_name__ = "view"
-
-    # def __new__(cls, *args, **kw):
-    # TO DO here:
-    # * Add construct that allow for various select_arguments
-    # * Add an _add_table to the MetaData to  register the view
+    named_with_column = True
+    implicit_returning = False
 
     def __init__(self, name, metadata, as_select, **kwargs):
+        """Instantiate a new View Clause."""
+        super(ViewClause, self).__init__()
         if not isinstance(as_select, Select):
-            raise TypeError("as_select must be a Select statement")
-        self.as_select = as_select
-        self._columns = as_select.columns
+            self.as_select = as_select
+            self._columns = None
+        else:
+            self.as_select = as_select
+            self._columns = as_select.columns
 
         self.metadata = metadata
+        self.bind = metadata.bind
         self.name = name
 
         self.schema = kwargs.pop("schema", None)
@@ -34,7 +37,45 @@ class ViewClause(DialectKWArgs, FromClause, Immutable, SchemaItem):
         self.indexes = set()
         self.constraints = set()
         self.foreign_keys = set()
+        self.primary_keys = set()
         if self.schema is not None:
             self.fullname = "%s.%s" % (self.schema, self.name)
         else:
             self.fullname = self.name
+
+    def exists(self, bind=None):
+        """Return True if this table exists."""
+        if bind is None:
+            bind = _bind_or_error(self)
+
+        return bind.run_callable(
+            bind.dialect.has_table, self.name, schema=self.schema
+        )
+
+
+class View(ViewClause):
+    """A View Representation."""
+
+    __visit_name__ = "view"
+
+    def __init__(self,
+                 name,
+                 metadata,
+                 as_select,
+                 **kwargs):
+        """Instantiate a view."""
+        super().__init__(name, metadata, as_select)
+
+
+class MaterializedView(ViewClause):
+    """A Materialized View representation."""
+
+    __visit_name__ = "materialized_view"
+
+    def __init__(self,
+                 name,
+                 metadata,
+                 as_select,
+                 **kwargs):
+        """Instantiate a Materialized View."""
+        super().__init__(name, metadata, as_select)
