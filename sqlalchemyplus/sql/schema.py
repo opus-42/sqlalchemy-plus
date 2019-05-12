@@ -1,4 +1,12 @@
-"""A base for View and Materialized View definition."""
+"""A base for View and Materialized View definition.
+
+To Dos :
+ * Better instanciation of columns : remove the primary_key form the selected
+ table, add row sql definition and column parsing from it, column from select
+ with alias shoudl maybe be handled differently.
+ * Add (unique) indexes for Materialized Views if passed as kwargs
+
+"""
 
 from sqlalchemy.sql.base import DialectKWArgs, _bind_or_error
 from sqlalchemy.sql.selectable import FromClause, Immutable, Select
@@ -42,6 +50,10 @@ class ViewClause(DialectKWArgs, FromClause, Immutable, SchemaItem):
             self.fullname = "%s.%s" % (self.schema, self.name)
         else:
             self.fullname = self.name
+
+    @property
+    def _from_objects(self):
+        return [self]
 
     def exists(self, bind=None):
         """Return True if this table exists."""
