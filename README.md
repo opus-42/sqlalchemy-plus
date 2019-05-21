@@ -18,9 +18,23 @@ pip install sqlalchemyplus
 
 ## Quick start
 
+**Define a View or a Materialized View programmatically**
+
 ```
-from sqlalchemy import Table, select, Column, MetaData
+from sqlalchemy import Table, select, Column, MetaData, Integer, String
+from sqlalchemyplus import View
 
+metadata = MetaData()
+table = Table('mytable',
+              metadata,
+              Column('key', Integer),
+              Column('value', String))
 
+select_table = table.select()
+view = View(
+    'myview',
+    metadata,
+    select_table
+)
 
 ```
