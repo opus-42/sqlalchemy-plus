@@ -35,7 +35,7 @@ with open(os.path.join(PACKAGE_DIR, "README.md"), "r") as fh:
 
 
 setuptools.setup(
-    name="sqlalchemyplus",
+    name="sqlalchemy-plus",
     version=find_version('sqlalchemyplus', '__init__.py'),
     author="Emmanuel Bavoux",
     author_email="emmanuel.bavoux@gmail.com",
