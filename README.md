@@ -1,6 +1,12 @@
 # SQL Alchemy Plus
 
-Some additional tools for SqlAlchemy
+This package provide additional package definition for SqlAlchemy
+that are specific for PostgreSQL and other database.
+
+Here are the currently supported features (database supported):
+* View (PostgreSQL)
+* Materialized View (PostgreSQL)
+
 
 ## Installation
 
@@ -12,4 +18,9 @@ pip install sqlalchemyplus
 
 ## Quick start
 
-(WIP)
+```
+from sqlalchemy import Table, select, Column, MetaData
+
+
+
+```

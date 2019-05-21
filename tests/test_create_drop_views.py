@@ -19,7 +19,7 @@ table1 = Table(
 )
 
 
-def test_create_drop_view():
+def test_create_drop_matview():
     """Test create view."""
     matview1 = MaterializedView(
         'mymatview',
@@ -40,9 +40,9 @@ def test_create_drop_view():
     assert raw_sql == sql_statement
 
 
-def test_create__view():
+def test_create_drop_view():
     """Test create view."""
-    view1 = MaterializedView(
+    view1 = View(
         'myview',
         MetaData(schema='myschema'),
         table1.select()
