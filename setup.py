@@ -39,7 +39,7 @@ setuptools.setup(
     version=find_version('sqlalchemyplus', '__init__.py'),
     author="Emmanuel Bavoux",
     author_email="emmanuel.bavoux@gmail.com",
-    description="Additional tools for SqlAlchemy",
+    description="Create Views and Materialized Views with SqlAlchemy",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/opus-42/sqlalchemy-plus",
