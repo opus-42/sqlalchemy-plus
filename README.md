@@ -38,3 +38,24 @@ view = View(
 )
 
 ```
+
+**Create and drop a view**
+
+```
+from sqlalchemy import create_engine
+from sqlalchemyplus import CreateView, DropView
+
+engine = create_engine("postgresql://example:example@localhost:5432/mydatabase")
+
+view = View(
+    'myview',
+    metadata,
+    select_table
+)
+
+# Execute 'CREATE VIEW myview AS (...)'
+engine.execute(CreateView(view))
+
+# Execute 'DROP VIEW myview'
+engine.execute(CreateView(view))
+```
