@@ -8,7 +8,7 @@ To Dos :
 
 """
 
-from sqlalchemy.sql.base import DialectKWArgs, _bind_or_error
+from sqlalchemy.sql.base import DialectKWArgs, _bind_or_error, ColumnCollection
 from sqlalchemy.sql.selectable import FromClause, Immutable, Select
 from sqlalchemy.sql.schema import SchemaItem, BLANK_SCHEMA, quoted_name
 
@@ -22,12 +22,15 @@ class ViewClause(DialectKWArgs, FromClause, Immutable, SchemaItem):
     def __init__(self, name, metadata, as_select, **kwargs):
         """Instantiate a new View Clause."""
         super(ViewClause, self).__init__()
+
+        # Initialize columns
+        self._columns = ColumnCollection()
         if not isinstance(as_select, Select):
             self.as_select = as_select
-            self._columns = None
         else:
             self.as_select = as_select
-            self._columns = as_select.columns
+            for c in as_select.columns:
+                self._append_column(c)
 
         self.metadata = metadata
         self.bind = metadata.bind
@@ -54,6 +57,12 @@ class ViewClause(DialectKWArgs, FromClause, Immutable, SchemaItem):
     @property
     def _from_objects(self):
         return [self]
+
+    def _append_column(self, source_column):
+        """Append column."""
+        column = source_column.copy()
+        self._columns[column.key] = column
+        column.table = self
 
     def exists(self, bind=None):
         """Return True if this table exists."""
