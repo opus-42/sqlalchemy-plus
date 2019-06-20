@@ -30,6 +30,6 @@ def test_select():
     """Select from a view clause."""
     select = view1.select()
     sql_statement = str(select.compile(dialect=postgresql.dialect()))
-    raw_sql = "SELECT id, value1 \nFROM myschema.myview"
+    raw_sql = "SELECT myschema.myview.id, myschema.myview.value1 \nFROM myschema.myview"  # noqa
 
     assert raw_sql == sql_statement

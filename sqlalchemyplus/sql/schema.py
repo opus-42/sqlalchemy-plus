@@ -7,6 +7,7 @@ To Dos :
  * Add (unique) indexes for Materialized Views if passed as kwargs
 
 """
+from copy import deepcopy
 
 from sqlalchemy.sql.base import DialectKWArgs, _bind_or_error, ColumnCollection
 from sqlalchemy.sql.selectable import FromClause, Immutable, Select
@@ -60,7 +61,7 @@ class ViewClause(DialectKWArgs, FromClause, Immutable, SchemaItem):
 
     def _append_column(self, source_column):
         """Append column."""
-        column = source_column.copy()
+        column = deepcopy(source_column)
         self._columns[column.key] = column
         column.table = self
 
