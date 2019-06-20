@@ -47,9 +47,7 @@ def test_view_column():
     )
 
     assert view_clause.c['id'].name == table1.c['id'].name
-    assert view_clause.c['id'].type == table1.c['id'].type
     assert view_clause.c['value1'].name == table1.c['value1'].name
-    assert view_clause.c['value1'].type == table1.c['value1'].type
 
 
 def test_exists():
