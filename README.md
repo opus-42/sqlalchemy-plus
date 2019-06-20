@@ -20,7 +20,7 @@ pip install sqlalchemyplus
 
 **Define a View or a Materialized View programmatically**
 
-```
+```python
 from sqlalchemy import Table, select, Column, MetaData, Integer, String
 from sqlalchemyplus import View
 
@@ -41,7 +41,7 @@ view = View(
 
 **Create and drop a view**
 
-```
+```python
 from sqlalchemy import create_engine
 from sqlalchemyplus import CreateView, DropView
 
