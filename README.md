@@ -57,5 +57,5 @@ view = View(
 engine.execute(CreateView(view))
 
 # Execute 'DROP VIEW myview'
-engine.execute(CreateView(view))
+engine.execute(DropView(view))
 ```
