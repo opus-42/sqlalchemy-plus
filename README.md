@@ -13,7 +13,7 @@ Here are the currently supported features (database supported):
 Install SQL Alchemy Plus using pip
 
 ```bash
-pip install sqlalchemyplus
+pip install sqlalchemy-plus
 ```
 
 ## Quick start
